@@ -31,7 +31,7 @@ public class MainWindow : Window, IDisposable
     private float _autoLeaveDelay = 3;
     private int _autoLeaveLimit = 1;
 
-    public MainWindow() : base("vfailguy")
+    public MainWindow() : base("vfailguy###vfailguy")
     {
         ShowCloseButton = false;
         RespectCloseHotkey = false;
@@ -68,6 +68,7 @@ public class MainWindow : Window, IDisposable
 
     public unsafe override void Draw()
     {
+        WindowName = $"vfailguy | MGF: {Plugin.MGF}###vfailguy";
         if (ImGui.Button("Queue"))
             _automation.RegisterForDuty();
         ImGui.SameLine();

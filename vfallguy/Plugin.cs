@@ -1,5 +1,8 @@
-﻿using Dalamud.Interface.Windowing;
+﻿using System;
+using System.Linq;
+using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
+using FFXIVClientStructs.FFXIV.Client.Game;
 
 namespace vfallguy;
 
@@ -9,6 +12,22 @@ public sealed class Plugin : IDalamudPlugin
 
     public WindowSystem WindowSystem = new("vfallguy");
     private MainWindow _wnd;
+    private const uint _MGF = 41629;
+    private static readonly unsafe CurrencyManager* currencyManager = CurrencyManager.Instance();
+    private static int? _mgf;
+    private static DateTime? _mgfLastUpdate;
+    internal unsafe static int MGF
+    {
+        get
+        {
+            if (_mgf != null && _mgfLastUpdate != null && (DateTime.Now - _mgfLastUpdate.Value).Seconds < 5)
+                return _mgf.Value;
+            _mgf = currencyManager->ItemBucket.First(i => i.Key.Equals(_MGF)).Value.Count;
+            _mgfLastUpdate = DateTime.Now;
+            Service.Log.Debug($"Updated MGF: {_mgf}");
+            return _mgf.Value;
+        }
+    }
 
     public Plugin(IDalamudPluginInterface dalamud)
     {
