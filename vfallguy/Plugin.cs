@@ -24,7 +24,7 @@ public sealed class Plugin : IDalamudPlugin
                 return _mgf.Value;
             _mgf = currencyManager->ItemBucket.First(i => i.Key.Equals(_MGF)).Value.Count;
             _mgfLastUpdate = DateTime.Now;
-            Service.Log.Debug($"Updated MGF: {_mgf}");
+            Service.Log.Verbose($"Updated MGF: {_mgf}");
             return _mgf.Value;
         }
     }
